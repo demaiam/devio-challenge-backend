@@ -30,5 +30,6 @@ async function findOrders() {
 
 export const orderRepository = {
   placeOrder,
+  createOrderProducts,
   findOrders
 };

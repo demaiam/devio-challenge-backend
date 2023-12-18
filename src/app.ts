@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import { handleApplicationErrors } from '@/middlewares';
-import { orderRouter, productsRouter } from '@/routers';
+import { orderRouter, productsRouter } from '@/routes';
 import { connectDb, disconnectDB } from '@/config';
 
 dotenv.config();

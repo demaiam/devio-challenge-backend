@@ -1,4 +1,4 @@
-import { productsRepository } from "@/repositories";
+import { productsRepository } from '@/repositories';
 
 async function findProducts() {
   const products = await productsRepository.findProducts();
