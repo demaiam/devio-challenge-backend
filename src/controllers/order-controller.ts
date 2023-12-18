@@ -3,10 +3,6 @@ import httpStatus from 'http-status';
 
 import { orderService } from '@/services';
 
-type Order = {
-  order: OrderType
-};
-
 type OrderType = {
   customer: string,
   total: number,
@@ -21,11 +17,11 @@ type OrderProducts = {
 };
 
 export async function placeOrder(req: Request, res: Response) {
-  const order = req.body as Order;
+  const order = req.body as OrderType;
 
   await orderService.placeOrder(order);
 
-  return res.status(httpStatus.CREATED);
+  return res.sendStatus(httpStatus.CREATED);
 }
 
 export async function findOrders(req: Request, res: Response) {

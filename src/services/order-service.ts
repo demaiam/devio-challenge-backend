@@ -1,10 +1,14 @@
-import { Order } from '@/protocols';
+import { OrderType } from '@/protocols';
 import { orderRepository } from '@/repositories';
 
-async function placeOrder(order: Order) {
-  const newOrder =  await orderRepository.placeOrder(order.order.customer, order.order.total);
+async function placeOrder(order: OrderType) {
+  const newOrder = await orderRepository.placeOrder(order.customer, order.total);
 
-  return await orderRepository.createOrderProducts(order.order.products, newOrder.id);
+  console.log(newOrder);
+
+  await orderRepository.createOrderProducts(order.products, newOrder.id);
+
+  return;
 }
 
 async function findOrders() {

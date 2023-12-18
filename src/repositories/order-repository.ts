@@ -1,9 +1,9 @@
 import { prisma } from '@/config';
-import { Order, OrderProducts } from '@/protocols';
+import { OrderProducts } from '@/protocols';
 
 async function placeOrder(customer: string, total: number) {
   return prisma.order.create({
-    data: { 
+    data: {
       customer: customer,
       total: total
     }
@@ -11,21 +11,26 @@ async function placeOrder(customer: string, total: number) {
 };
 
 async function createOrderProducts(products: OrderProducts[], orderId: number) {
-  products.map(product => 
+  products.map((product) => {
     prisma.orderProducts.create({
-    data: { 
-      name: product.name,
-      price: product.price,
-      quantity: product.quantity,
-      imageUrl: product.imageUrl,
-      orderId: orderId
-     }
+      data: {
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity,
+        imageUrl: product.imageUrl,
+        orderId: orderId
+      }
     })
-  );
+  });
+  return;
 }
 
 async function findOrders() {
-  return prisma.order.findMany();
+  return prisma.order.findMany({
+    include: {
+      products: true
+    }
+  });
 }
 
 export const orderRepository = {
