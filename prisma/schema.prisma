@@ -7,11 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now())
-  name        String
+enum OrderStatus {
+  PENDING
+  FINISHED
 }
 
 model Product {
@@ -39,22 +37,25 @@ model Additional {
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  customer  String   @db.VarChar(255)
-  total     Int
-  products  OrderProducts[]
+  id          Int            @id @default(autoincrement())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @default(now())
+  customer    String         @db.VarChar(255)
+  total       Int
+  observation String         @db.VarChar(255)
+  status      OrderStatus
+  product     OrderProduct[]
 }
 
-model OrderProducts {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  name      String   @db.VarChar(255)
-  price     Int
-  quantity  Int
-  imageUrl  String   @db.VarChar(255)
-  orderId   Int
-  Order     Order    @relation(fields: [orderId], references: [id])
+model OrderProduct {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  name         String   @db.VarChar(255)
+  price        Int
+  quantity     Int
+  imageUrl     String   @db.VarChar(255)
+  orderId      Int      @unique
+  additionals  String[]
+  Order        Order    @relation(fields: [orderId], references: [id])
 }

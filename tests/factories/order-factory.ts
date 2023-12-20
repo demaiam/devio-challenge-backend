@@ -1,22 +1,23 @@
 import { prisma } from '@/config';
 import { faker } from '@faker-js/faker';
+import { OrderStatus } from '@prisma/client';
 
 export function generateOrderData() {
   const order = {
     customer: faker.person.firstName(),
     total: faker.number.int({ max: 50000 }),
-    products: [
+    observation: faker.lorem.paragraph(),
+    status: OrderStatus.PENDING,
+    product: [
       {
         name: faker.commerce.productName(),
         price: faker.number.int({ max: 10000 }),
         quantity: faker.number.int({ max: 10 }),
-        imageUrl: faker.internet.avatar()
-      },
-      {
-        name: faker.commerce.productName(),
-        price: faker.number.int({ max: 10000 }),
-        quantity: faker.number.int({ max: 10 }),
-        imageUrl: faker.internet.avatar()
+        imageUrl: faker.internet.avatar(),
+        additionals: [
+          faker.commerce.productName(),
+          faker.commerce.productName()
+        ]
       }
     ]
   };
@@ -25,30 +26,47 @@ export function generateOrderData() {
 }
 
 export async function createOrder() {
-  const order = await prisma.order.create({
+  const pendingOrder = await prisma.order.create({
     data: {
       customer: faker.person.firstName(),
       total: faker.number.int({ max: 50000 }),
+      observation: faker.lorem.paragraph(),
+      status: OrderStatus.PENDING
     }
   });
 
-  await prisma.orderProducts.create({
+  await prisma.orderProduct.create({
     data: {
       name: faker.commerce.productName(),
       price: faker.number.int({ max: 10000 }),
       quantity: faker.number.int({ max: 10 }),
-      orderId: order.id,
-      imageUrl: faker.internet.avatar()
+      orderId: pendingOrder.id,
+      imageUrl: faker.internet.avatar(),
+      additionals: [
+        faker.commerce.productName()
+      ],
     }
   });
 
-  await prisma.orderProducts.create({
+  const finishedOrder = await prisma.order.create({
+    data: {
+      customer: faker.person.firstName(),
+      total: faker.number.int({ max: 50000 }),
+      observation: faker.lorem.paragraph(),
+      status: OrderStatus.FINISHED
+    }
+  });
+
+  await prisma.orderProduct.create({
     data: {
       name: faker.commerce.productName(),
       price: faker.number.int({ max: 10000 }),
       quantity: faker.number.int({ max: 10 }),
-      orderId: order.id,
-      imageUrl: faker.internet.avatar()
+      orderId: finishedOrder.id,
+      imageUrl: faker.internet.avatar(),
+      additionals: [
+        faker.commerce.productName()
+      ],
     }
   });
 }

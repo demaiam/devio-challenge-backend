@@ -1,14 +1,4 @@
 -- CreateTable
-CREATE TABLE "Category" (
-    "id" SERIAL NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -31,6 +21,7 @@ CREATE TABLE "Additional" (
     "description" VARCHAR(255) NOT NULL,
     "price" INTEGER NOT NULL,
     "productId" INTEGER NOT NULL,
+    "observation" VARCHAR(255) NOT NULL,
     "imageUrl" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "Additional_pkey" PRIMARY KEY ("id")
@@ -48,21 +39,25 @@ CREATE TABLE "Order" (
 );
 
 -- CreateTable
-CREATE TABLE "OrderProducts" (
+CREATE TABLE "OrderProduct" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" VARCHAR(255) NOT NULL,
     "price" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "imageUrl" TEXT NOT NULL,
+    "imageUrl" VARCHAR(255) NOT NULL,
     "orderId" INTEGER NOT NULL,
+    "additionals" TEXT[],
 
-    CONSTRAINT "OrderProducts_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "OrderProduct_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "OrderProduct_orderId_key" ON "OrderProduct"("orderId");
 
 -- AddForeignKey
 ALTER TABLE "Additional" ADD CONSTRAINT "Additional_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderProducts" ADD CONSTRAINT "OrderProducts_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OrderProduct" ADD CONSTRAINT "OrderProduct_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

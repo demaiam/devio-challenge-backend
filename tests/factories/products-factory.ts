@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from '@/config';
 import { faker } from '@faker-js/faker';
 
 export async function createProduct() {

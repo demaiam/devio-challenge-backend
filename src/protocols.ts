@@ -5,15 +5,17 @@ export type Order = {
 export type OrderType = {
   customer: string,
   total: number,
-  products: OrderProducts[]
+  observation: string,
+  product: OrderProduct[]
 };
 
-export type OrderProducts = {
+export type OrderProduct = {
   name: string,
   price: number,
   quantity: number,
   imageUrl: string
 };
+
 
 export type ApplicationError = {
   name: string;
