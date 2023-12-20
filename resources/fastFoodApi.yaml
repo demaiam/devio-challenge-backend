@@ -1,0 +1,221 @@
+openapi: 3.0.3
+info:
+  title: Fast Food API
+  description: |-
+    Simple API to bet on games
+  version: 1.0.11
+servers:
+  - url: https://fastfoodapi-fdgq.onrender.com
+tags:
+  - name: products
+    description: Everything about products
+  - name: orders
+    description: Everything about orders
+    
+paths:
+
+  /products:
+    get:
+      tags:
+        - products
+      summary: Find products
+      description: Find every product
+      operationId: findProducts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsGetRes'
+          
+  /order:
+    post:
+      tags:
+        - order
+      summary: Place order
+      description: Place a new order
+      operationId: placeOrder
+      requestBody:
+        description: Order information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPostReq'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OrderPostReq'
+          
+    get:
+      tags:
+        - order
+      summary: Find orders
+      description: Find every order
+      operationId: findOrders
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderGetRes'
+
+
+components:
+  schemas:
+    ProductsGetRes:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            example: 10
+          createdAt:
+            type: string
+            example: "2023-01-01T00:00:00.000Z"
+          updatedAt:
+            type: string
+            example: "2023-01-01T00:00:00.000Z"
+          name:
+            type: string
+            example: 'Hambúrguer'
+          description:
+            type: string
+            example: '2x carne 200g'
+          category:
+            type: string
+            example: 'Combos'
+          price:
+            type: integer
+            format: int64
+            example: 3500
+          imageUrl:
+            type: string
+            example: 'https://'
+          additionals:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                  example: 10
+                createdAt:
+                  type: string
+                  example: "2023-01-01T00:00:00.000Z"
+                updatedAt:
+                  type: string
+                  example: "2023-01-01T00:00:00.000Z"
+                name:
+                  type: string
+                  example: 'Cheddar'
+                description:
+                  type: string
+                  example: '100g'
+                price:
+                  type: integer
+                  format: int64
+                  example: 100
+                imageUrl:
+                  type: string
+                  example: 'https://'
+  
+  
+  
+    OrderPostReq:
+      type: object
+      properties:
+        customer:
+          type: string
+          example: "André"
+        total:
+          type: integer
+          format: int64
+          example: 4000
+        observation:
+          type: string
+          example: "Tirar cebola"
+        product:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Hambúrguer"
+              price:
+                type: integer
+                format: int64
+                example: 2000
+              quantity:
+                type: integer
+                format: int64
+                example: 2
+          
+          
+    OrderGetRes:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            example: 10
+          createdAt:
+            type: string
+            example: "2023-01-01T00:00:00.000Z"
+          updatedAt:
+            type: string
+            example: "2023-01-01T00:00:00.000Z"
+          customer:
+            type: string
+            example: "André"
+          total:
+            type: integer
+            format: int64
+            example: 4000
+          observation:
+            type: string
+            example: "Tirar a cebola"
+          status:
+            type: string
+            example: "FINISHED"
+          product:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                  example: 10
+                createdAt:
+                  type: string
+                  example: "2023-01-01T00:00:00.000Z"
+                updatedAt:
+                  type: string
+                  example: "2023-01-01T00:00:00.000Z"
+                name:
+                  type: string
+                  example: 'Hambúrguer'
+                price:
+                  type: integer
+                  format: int64
+                  example: 2000
+                quantity:
+                  type: integer
+                  format: int64
+                  example: 2000
+                imageUrl:
+                  type: string
+                  example: "https://"
